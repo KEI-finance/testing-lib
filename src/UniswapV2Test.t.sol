@@ -1,22 +1,20 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import "test/mocks/WETH9Mock.sol";
 
 import "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
 import "@uniswap/v2-core/contracts/interfaces/IUniswapV2Factory.sol";
 
 import "./BaseTest.t.sol";
+import "./WETHTest.sol";
 
-contract UniswapV2Test is BaseTest {
-    WETH9Mock immutable WETH;
-    IUniswapV2Factory immutable UNISWAP_V2_FACTORY;
-    IUniswapV2Router02 immutable UNISWAP_V2_ROUTER;
-    address immutable FEE_TO_SETTER;
+contract UniswapV2Test is WETHTest {
+    IUniswapV2Factory public immutable UNISWAP_V2_FACTORY;
+    IUniswapV2Router02 public immutable UNISWAP_V2_ROUTER;
+    address public immutable FEE_TO_SETTER;
 
     constructor() {
         FEE_TO_SETTER = makeAddr("FEE_TO_SETTER");
-        WETH = new WETH9Mock();
         UNISWAP_V2_FACTORY = IUniswapV2Factory(
             _deployArtifact(
                 "/node_modules/@uniswap/v2-core/build/UniswapV2Factory.json",
@@ -39,10 +37,5 @@ contract UniswapV2Test is BaseTest {
         vm.label(address(UNISWAP_V2_ROUTER), "UNISWAP_V2_ROUTER");
         vm.label(address(UNISWAP_V2_FACTORY), "UNISWAP_V2_FACTORY");
         vm.label(FEE_TO_SETTER, "FEE_TO_SETTER");
-    }
-
-    function dealWETH(address to, uint256 amount) internal {
-        vm.deal(address(WETH), amount);
-        deal(address(WETH), to, amount);
     }
 }
