@@ -9,13 +9,14 @@ import "./BaseTest.t.sol";
 import "./WETHTest.sol";
 
 contract UniswapV2Test is WETHTest {
-    IUniswapV2Factory public immutable UNISWAP_V2_FACTORY;
-    IUniswapV2Router02 public immutable UNISWAP_V2_ROUTER;
     address public immutable FEE_TO_SETTER;
+
+    IUniswapV2Factory public immutable uniswapV2Factory;
+    IUniswapV2Router02 public immutable uniswapV2Router02;
 
     constructor() {
         FEE_TO_SETTER = makeAddr("FEE_TO_SETTER");
-        UNISWAP_V2_FACTORY = IUniswapV2Factory(
+        uniswapV2Factory = IUniswapV2Factory(
             _deployArtifact(
                 "/node_modules/@uniswap/v2-core/build/UniswapV2Factory.json",
                 ".evm.bytecode.object",
@@ -24,18 +25,17 @@ contract UniswapV2Test is WETHTest {
             )
         );
 
-        UNISWAP_V2_ROUTER = IUniswapV2Router02(
+        uniswapV2Router02 = IUniswapV2Router02(
             _deployArtifact(
                 "/node_modules/@uniswap/v2-periphery/build/UniswapV2Router02.json",
                 ".evm.bytecode.object",
-                abi.encode(UNISWAP_V2_FACTORY, address(WETH)),
+                abi.encode(uniswapV2Factory, address(weth)),
                 0
             )
         );
 
-        vm.label(address(WETH), "WETH");
-        vm.label(address(UNISWAP_V2_ROUTER), "UNISWAP_V2_ROUTER");
-        vm.label(address(UNISWAP_V2_FACTORY), "UNISWAP_V2_FACTORY");
+        vm.label(address(uniswapV2Router02), "uniswapV2Router02");
+        vm.label(address(uniswapV2Factory), "uniswapV2Factory");
         vm.label(FEE_TO_SETTER, "FEE_TO_SETTER");
     }
 }
