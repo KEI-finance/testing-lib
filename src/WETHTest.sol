@@ -8,7 +8,7 @@ contract WETHTest is BaseTest {
     WETH9Mock public immutable weth = new WETH9Mock();
 
     constructor() {
-        vm.label(address(weth), 'WETH');
+        vm.label(address(weth), "WETH");
     }
 
     function dealWETH(address to, uint256 amount) internal {

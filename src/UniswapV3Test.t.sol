@@ -3,12 +3,14 @@ pragma solidity ^0.8.19;
 
 import "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
 import "@uniswap/v3-core/contracts/interfaces/IUniswapV3Factory.sol";
+import "@uniswap/v3-periphery/contracts/interfaces/IQuoter.sol";
 
 import "./WETHTest.sol";
 
 contract UniswapV3Test is WETHTest {
     IUniswapV3Factory public immutable uniswapV3Factory;
-    ISwapRouter public immutable swapRouter;
+    ISwapRouter public immutable uniswapV3Router;
+    IQuoter public immutable uniswapV3Quoter;
 
     constructor() {
         uniswapV3Factory = IUniswapV3Factory(
@@ -20,7 +22,7 @@ contract UniswapV3Test is WETHTest {
             )
         );
 
-        swapRouter = ISwapRouter(
+        uniswapV3Router = ISwapRouter(
             _deployArtifact(
                 "/node_modules/@uniswap/v3-periphery/artifacts/contracts/SwapRouter.sol/SwapRouter.json",
                 ".bytecode",
@@ -29,7 +31,17 @@ contract UniswapV3Test is WETHTest {
             )
         );
 
-        vm.label(address(swapRouter), "swapRouter");
+        uniswapV3Quoter = IQuoter(
+            _deployArtifact(
+                "/node_modules/@uniswap/v3-periphery/artifacts/contracts/lens/Quoter.sol/Quoter.json",
+                ".bytecode",
+                abi.encode(address(uniswapV3Factory), address(weth)),
+                0
+            )
+        );
+
+        vm.label(address(uniswapV3Router), "uniswapV3Router");
         vm.label(address(uniswapV3Factory), "uniswapV3Factory");
+        vm.label(address(uniswapV3Quoter), "uniswapV3Quoter");
     }
 }
