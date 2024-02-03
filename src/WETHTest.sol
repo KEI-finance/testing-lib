@@ -1,18 +1,18 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import "./BaseTest.t.sol";
-import "./WETH9Mock.t.sol";
+import {BaseTest} from "./BaseTest.sol";
+import {WETH9Mock} from "./WETH9Mock.sol";
 
 contract WETHTest is BaseTest {
-    WETH9Mock public immutable weth = new WETH9Mock();
+    WETH9Mock public immutable WETH = new WETH9Mock();
 
     constructor() {
-        vm.label(address(weth), "WETH");
+        vm.label(address(WETH), "WETH");
     }
 
     function dealWETH(address to, uint256 amount) internal {
-        vm.deal(address(weth), amount);
-        deal(address(weth), to, amount);
+        vm.deal(address(WETH), amount);
+        deal(address(WETH), to, amount);
     }
 }

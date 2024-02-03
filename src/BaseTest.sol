@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import "forge-std/Test.sol";
-import "forge-std/StdJson.sol";
+import {Test, stdJson} from "forge-std/Test.sol";
 
-import "@openzeppelin/contracts/utils/Create2.sol";
+import {Create2} from "@openzeppelin/contracts/utils/Create2.sol";
 
 contract BaseTest is Test {
     using stdJson for string;

@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
-import "@uniswap/v2-core/contracts/interfaces/IUniswapV2Factory.sol";
+import {IUniswapV2Router02} from "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
+import {IUniswapV2Factory} from "@uniswap/v2-core/contracts/interfaces/IUniswapV2Factory.sol";
 
-import "./BaseTest.t.sol";
-import "./WETHTest.sol";
+import {WETHTest} from "./WETHTest.sol";
 
 contract UniswapV2Test is WETHTest {
     address public immutable FEE_TO_SETTER;
@@ -28,7 +27,7 @@ contract UniswapV2Test is WETHTest {
             _deployArtifact(
                 "/node_modules/@uniswap/v2-periphery/build/UniswapV2Router02.json",
                 ".evm.bytecode.object",
-                abi.encode(uniswapV2Factory, address(weth)),
+                abi.encode(uniswapV2Factory, address(WETH)),
                 0
             )
         );
