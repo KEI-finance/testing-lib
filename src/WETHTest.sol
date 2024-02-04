@@ -5,7 +5,7 @@ import {BaseTest} from "./BaseTest.sol";
 import {WETH9Mock} from "./WETH9Mock.sol";
 
 contract WETHTest is BaseTest {
-    WETH9Mock public immutable WETH = new WETH9Mock();
+    WETH9Mock public WETH = new WETH9Mock();
 
     constructor() {
         vm.label(address(WETH), "WETH");

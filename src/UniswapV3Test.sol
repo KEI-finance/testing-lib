@@ -26,7 +26,7 @@ contract UniswapV3Test is WETHTest, TokensTest {
     address public immutable USDC_WETH;
     address public immutable USDT_WETH;
     address public immutable USDT_WBTC;
-//    address public immutable USDC_WBTC;
+    //    address public immutable USDC_WBTC;
     address public immutable WETH_WBTC;
 
     constructor() {
@@ -84,7 +84,7 @@ contract UniswapV3Test is WETHTest, TokensTest {
 
         (USDT_WETH,,,,) = addUniswapV3Liquidity(address(USDT), address(WETH), 500, 1_000e18, 2_000_000e18);
 
-//        (USDC_WBTC,,,,) = addUniswapV3Liquidity(address(USDC), address(WBTC), 500, 1_000e18, 45_000_000e18);
+        //        (USDC_WBTC,,,,) = addUniswapV3Liquidity(address(USDC), address(WBTC), 500, 1_000e18, 45_000_000e18);
 
         (USDT_WBTC,,,,) = addUniswapV3Liquidity(address(USDT), address(WBTC), 500, 1_000e18, 45_000_000e18);
 

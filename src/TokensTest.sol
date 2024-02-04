@@ -2,14 +2,16 @@
 pragma solidity ^0.8.19;
 
 import {Test} from "forge-std/Test.sol";
+import {IERC20} from "@openzeppelin/contracts/interfaces/IERC20.sol";
 
+import {ERC20Mock} from "./ERC20Mock.sol";
 import {ERC20Mock} from "./ERC20Mock.sol";
 
 contract TokensTest is Test {
-    ERC20Mock public USDC = new ERC20Mock("USD Coin", "USDC");
-    ERC20Mock public USDT = new ERC20Mock("Tether USD", "USDT");
-    ERC20Mock public WBTC = new ERC20Mock("Wrapped BTC", "WBTC");
-    ERC20Mock public WMATC = new ERC20Mock("Wrapped MATC", "WMATIC");
+    IERC20 public USDC = IERC20(address(new ERC20Mock("USD Coin", "USDC")));
+    IERC20 public USDT = IERC20(address(new ERC20Mock("Tether USD", "USDT")));
+    IERC20 public WBTC = IERC20(address(new ERC20Mock("Wrapped BTC", "WBTC")));
+    IERC20 public WMATC = IERC20(address(new ERC20Mock("Wrapped MATC", "WMATIC")));
 
     constructor() {
         vm.label(address(USDC), "USDC");
