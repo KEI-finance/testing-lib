@@ -124,15 +124,25 @@ contract UniswapV3Test is WETHTest, TokensTest {
     }
 
     function calculateSqrtPriceX96(uint256 reserves0, uint256 reserves1) internal pure returns (uint160 sqrtPriceX96) {
-        require(reserves0 > 0, "Token1 amount must be greater than 0");
+        require(reserves1 > 0, "Token1 amount must be greater than 0");
 
         // Calculate price ratio of token0 to token1 with 18 decimal places
-        uint256 priceRatio = (reserves1 * 1e18) / reserves0;
+        uint256 priceRatio = (reserves0 * 1e18) / reserves1;
 
         // Convert price ratio to 96-bit precision fixed-point number
         uint256 priceRatioX96 = priceRatio.sqrt() * 2 ** 96 / uint256(1e18).sqrt();
 
         // Calculate square root of the price ratio in 96-bit precision
         sqrtPriceX96 = priceRatioX96.toUint160();
+    }
+
+    function swap(bytes memory path, address recipient, uint256 amount) internal returns (uint256){
+        return uniswapV3Router.exactInput(ISwapRouter.ExactInputParams({
+            path: path,
+            recipient: recipient,
+            deadline: block.timestamp,
+            amountIn: amount,
+            amountOutMinimum: 1
+        }));
     }
 }
