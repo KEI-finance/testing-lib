@@ -133,6 +133,6 @@ contract UniswapV3Test is WETHTest, TokensTest {
         uint256 priceRatioX96 = priceRatio.sqrt() * 2 ** 96 / uint256(1e18).sqrt();
 
         // Calculate square root of the price ratio in 96-bit precision
-        sqrtPriceX96 = priceRatioX96.sqrt().toUint160();
+        sqrtPriceX96 = priceRatioX96.toUint160();
     }
 }
