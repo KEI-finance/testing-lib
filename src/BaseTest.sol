@@ -32,4 +32,8 @@ contract BaseTest is Test {
 
         return Create2.deploy(0, salt, abi.encodePacked(json.readBytes(key), args));
     }
+
+    function time() internal virtual returns (uint48) {
+        return uint48(block.timestamp);
+    }
 }
