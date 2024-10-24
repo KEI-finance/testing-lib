@@ -30,12 +30,8 @@ abstract contract BaseDeployScript is ProxyDeployTest {
         deployer = vm.rememberKey(privateKey);
     }
 
-    function getConfig() public view returns (DeployConfig memory) {
-        return config;
-    }
-
     function getAddress(string memory name) internal view returns (address) {
-        return getAddress(name, "", config.salt);
+        return getAddress(name, "", salt);
     }
 
     function getAddress(string memory name, bytes32 salt) internal view returns (address) {
@@ -43,7 +39,7 @@ abstract contract BaseDeployScript is ProxyDeployTest {
     }
 
     function getAddress(string memory name, bytes memory args) internal view returns (address) {
-        return getAddress(name, args, config.salt);
+        return getAddress(name, args, salt);
     }
 
     function getAddress(string memory name, bytes memory args, bytes32 salt) internal view returns (address) {
@@ -52,7 +48,7 @@ abstract contract BaseDeployScript is ProxyDeployTest {
     }
 
     function deploy(string memory name) internal returns (address addr) {
-        return deploy(name, "", true, config.salt);
+        return deploy(name, "", true, salt);
     }
 
     function deploy(string memory name, bytes32 salt) internal returns (address addr) {
@@ -60,7 +56,7 @@ abstract contract BaseDeployScript is ProxyDeployTest {
     }
 
     function deploy(string memory name, bool deployIfMissing) internal returns (address addr) {
-        return deploy(name, "", deployIfMissing, config.salt);
+        return deploy(name, "", deployIfMissing, salt);
     }
 
     function deploy(string memory name, bool deployIfMissing, bytes32 salt) internal returns (address addr) {
@@ -68,7 +64,7 @@ abstract contract BaseDeployScript is ProxyDeployTest {
     }
 
     function deploy(string memory name, bytes memory args) internal returns (address addr) {
-        return deploy(name, args, true, config.salt);
+        return deploy(name, args, true, salt);
     }
 
     function deploy(string memory name, bytes memory args, bytes32 salt) internal returns (address addr) {
