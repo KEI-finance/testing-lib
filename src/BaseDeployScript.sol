@@ -1,12 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity =0.8.20;
+pragma solidity >=0.8.0;
 
-import {console2, stdJson} from "forge-std/Script.sol";
-import {ProxyDeployTest} from "@kei.fi/proxy-contracts/ProxyDeployTest.sol";
+import {Script} from "forge-std/Script.sol";
 
-abstract contract BaseDeployScript is ProxyDeployTest {
-    using stdJson for string;
-
+abstract contract BaseDeployScript is Script {
+    
     bytes32 salt;
     address public deployer;
     mapping(string => address) public deployment;
@@ -34,48 +32,48 @@ abstract contract BaseDeployScript is ProxyDeployTest {
         return getAddress(name, "", salt);
     }
 
-    function getAddress(string memory name, bytes32 salt) internal view returns (address) {
-        return getAddress(name, "", salt);
+    function getAddress(string memory name, bytes32 _salt) internal view returns (address) {
+        return getAddress(name, "", _salt);
     }
 
     function getAddress(string memory name, bytes memory args) internal view returns (address) {
         return getAddress(name, args, salt);
     }
 
-    function getAddress(string memory name, bytes memory args, bytes32 salt) internal view returns (address) {
+    function getAddress(string memory name, bytes memory args, bytes32 _salt) internal view returns (address) {
         bytes32 hash = hashInitCode(vm.getCode(name), args);
-        return vm.computeCreate2Address(salt, hash);
+        return vm.computeCreate2Address(_salt, hash);
     }
 
     function deploy(string memory name) internal returns (address addr) {
         return deploy(name, "", true, salt);
     }
 
-    function deploy(string memory name, bytes32 salt) internal returns (address addr) {
-        return deploy(name, "", true, salt);
+    function deploy(string memory name, bytes32 _salt) internal returns (address addr) {
+        return deploy(name, "", true, _salt);
     }
 
     function deploy(string memory name, bool deployIfMissing) internal returns (address addr) {
         return deploy(name, "", deployIfMissing, salt);
     }
 
-    function deploy(string memory name, bool deployIfMissing, bytes32 salt) internal returns (address addr) {
-        return deploy(name, "", deployIfMissing, salt);
+    function deploy(string memory name, bool deployIfMissing, bytes32 _salt) internal returns (address addr) {
+        return deploy(name, "", deployIfMissing, _salt);
     }
 
     function deploy(string memory name, bytes memory args) internal returns (address addr) {
         return deploy(name, args, true, salt);
     }
 
-    function deploy(string memory name, bytes memory args, bytes32 salt) internal returns (address addr) {
-        return deploy(name, args, true, salt);
+    function deploy(string memory name, bytes memory args, bytes32 _salt) internal returns (address addr) {
+        return deploy(name, args, true, _salt);
     }
 
-    function deploy(string memory name, bytes memory args, bool deployIfMissing, bytes32 salt)
+    function deploy(string memory name, bytes memory args, bool deployIfMissing, bytes32 _salt)
         internal
         returns (address addr)
     {
-        addr = getAddress(name, args, salt);
+        addr = getAddress(name, args, _salt);
         deployment[name] = addr;
 
         if (addr.code.length == 0) {
@@ -84,7 +82,7 @@ abstract contract BaseDeployScript is ProxyDeployTest {
             bytes memory bytecode = abi.encodePacked(vm.getCode(name), args);
 
             assembly {
-                addr := create2(0, add(bytecode, 0x20), mload(bytecode), salt)
+                addr := create2(0, add(bytecode, 0x20), mload(bytecode), _salt)
                 if iszero(extcodesize(addr)) { revert(0, 0) }
             }
         }
