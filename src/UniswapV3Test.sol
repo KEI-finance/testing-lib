@@ -136,13 +136,15 @@ contract UniswapV3Test is WETHTest, TokensTest {
         sqrtPriceX96 = priceRatioX96.toUint160();
     }
 
-    function swap(bytes memory path, address recipient, uint256 amount) internal returns (uint256){
-        return uniswapV3Router.exactInput(ISwapRouter.ExactInputParams({
-            path: path,
-            recipient: recipient,
-            deadline: block.timestamp,
-            amountIn: amount,
-            amountOutMinimum: 1
-        }));
+    function swap(bytes memory path, address recipient, uint256 amount) internal returns (uint256) {
+        return uniswapV3Router.exactInput(
+            ISwapRouter.ExactInputParams({
+                path: path,
+                recipient: recipient,
+                deadline: block.timestamp,
+                amountIn: amount,
+                amountOutMinimum: 1
+            })
+        );
     }
 }

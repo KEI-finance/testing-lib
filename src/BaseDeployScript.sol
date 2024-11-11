@@ -2,9 +2,11 @@
 pragma solidity >=0.8.0;
 
 import {Script} from "forge-std/Script.sol";
+import {stdJson} from "forge-std/StdJson.sol";
 
 abstract contract BaseDeployScript is Script {
-    
+    using stdJson for string;
+
     bytes32 salt;
     address public deployer;
     mapping(string => address) public deployment;
@@ -85,6 +87,44 @@ abstract contract BaseDeployScript is Script {
                 addr := create2(0, add(bytecode, 0x20), mload(bytecode), _salt)
                 if iszero(extcodesize(addr)) { revert(0, 0) }
             }
+        }
+    }
+
+    function loadJson() internal returns (string memory key, string memory json) {
+        string memory root = vm.projectRoot();
+        string memory path = string.concat(root, "/config.json");
+        json = vm.readFile(path);
+
+        string[] memory envs = new string[](3);
+        envs[0] = string.concat(".", vm.envOr(string("ENV"), string("local")));
+        envs[1] = ".develop";
+        envs[2] = "";
+
+        string[] memory chains = new string[](2);
+        chains[0] = string.concat(".", vm.toString(block.chainid));
+        chains[1] = ".11155111";
+
+        bool found = false;
+        for (uint256 i = 0; i < envs.length; i++) {
+            for (uint256 j = 0; j < chains.length; j++) {
+                key = string.concat(envs[i], chains[j]);
+                if (vm.keyExists(json, key)) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found) {
+                break;
+            }
+        }
+
+        if (!found) {
+            revert(string.concat("CONFIG_NOT_FOUND: environment ", envs[0], " chain ", chains[0]));
+        }
+
+        if (vm.keyExists(json, string.concat(key, ".salt"))) {
+            salt = bytes32(json.readUint(string.concat(key, ".salt")));
         }
     }
 }
