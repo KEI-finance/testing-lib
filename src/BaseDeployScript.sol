@@ -28,8 +28,8 @@ abstract contract BaseDeployScript is Script {
             privateKey = vm.envUint(string.concat("PRIVATE_KEY"));
         }
         deployer = vm.rememberKey(privateKey);
-        (string memory key, string memory json) = loadJson();
-        loadConfig(key, json);
+        (string memory json, string memory key) = loadJson();
+        loadConfig(json, key);
     }
 
     function getAddress(string memory name) internal view returns (address) {
@@ -92,7 +92,7 @@ abstract contract BaseDeployScript is Script {
         }
     }
 
-    function loadJson() internal virtual returns (string memory key, string memory json) {
+    function loadJson() internal virtual returns (string memory json, string memory key) {
         string memory root = vm.projectRoot();
         string memory path = string.concat(root, "/config.json");
         json = vm.readFile(path);
@@ -130,5 +130,5 @@ abstract contract BaseDeployScript is Script {
         }
     }
 
-    function loadConfig(string memory key, string memory json) internal virtual;
+    function loadConfig(string memory json, string memory key) internal virtual;
 }
