@@ -12,8 +12,6 @@ abstract contract BaseDeployScript is Script {
     address public deployer;
     mapping(string => address) public deployment;
 
-    bool internal immutable _IS_TEST;
-
     modifier record() {
         vm.startBroadcast(deployer);
 
