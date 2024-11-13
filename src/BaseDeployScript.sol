@@ -2,6 +2,7 @@
 pragma solidity >=0.8.0;
 
 import {Script} from "forge-std/Script.sol";
+import {Test} from "forge-std/Test.sol";
 import {stdJson} from "forge-std/StdJson.sol";
 
 abstract contract BaseDeployScript is Script {
@@ -10,6 +11,8 @@ abstract contract BaseDeployScript is Script {
     bytes32 salt;
     address public deployer;
     mapping(string => address) public deployment;
+
+    bool internal immutable _IS_TEST;
 
     modifier record() {
         vm.startBroadcast(deployer);
@@ -21,15 +24,23 @@ abstract contract BaseDeployScript is Script {
     }
 
     function setUp() public virtual {
-        uint256 privateKey;
-        if (block.chainid == 31337) {
-            (, privateKey) = makeAddrAndKey("DEPLOYER");
-        } else {
-            privateKey = vm.envUint(string.concat("PRIVATE_KEY"));
+        (, uint256 privateKey) = makeAddrAndKey("DEPLOYER");
+
+        if (!isTest()) {
+            privateKey = vm.envUint("PRIVATE_KEY");
         }
+
         deployer = vm.rememberKey(privateKey);
         (string memory json, string memory key) = loadJson();
         loadConfig(json, key);
+    }
+
+    function isTest() public view returns (bool) {
+        try Test(address(this)).IS_TEST() returns (bool result) {
+            return result;
+        } catch {
+            return false;
+        }
     }
 
     function getAddress(string memory name) internal view returns (address) {
