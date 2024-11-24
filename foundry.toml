@@ -1,7 +1,7 @@
 [profile.default]
 src = "src"
 out = "out"
-libs = ["lib", "node_modules"]
+libs = ["lib", "node_modules", "dependencies"]
 optimizer = true
 optimizer-runs = 200
 fs_permissions = [{ access = "read", path = "./"}]
@@ -9,5 +9,8 @@ fs_permissions = [{ access = "read", path = "./"}]
 [fmt]
 line_length = 120
 tab_width = 4
+
+[dependencies]
+forge-std = "1.9.4"
 
 # See more config options https://github.com/foundry-rs/foundry/tree/master/config
